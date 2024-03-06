@@ -2,60 +2,97 @@ package org.example;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public class TimerApp extends JFrame {
-    private final JButton startStopButton;
+    private JButton startButton;
+    private JButton stopButton;
     private Timer timer;
-    private final JLabel timerLabel;
-    private int secondsElapsed;
+    private JLabel titleLabel;
+    private JLabel timerLabel;
+    private int hours;
+    private int minutes;
+    private int seconds;
 
     public TimerApp() {
-        setTitle("Timer Application");
-        setSize(300, 200);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        try {
+            setTitle("Exam Monitor");
+            setSize(400, 600);
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setLocationRelativeTo(null);
 
-        // Initialize components
-        startStopButton = new JButton("Start");
-        timerLabel = new JLabel("Timer: 0 seconds");
+            // Initialize components
+            titleLabel = new JLabel("Exam Monitor");
+            titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+            titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        // Add action listener to the button
-        startStopButton.addActionListener(e -> {
-            if (timer == null) {
-                // Start button clicked
-                startTimer();
-            } else {
-                // Stop button clicked
-                stopTimer();
-            }
-        });
+            timerLabel = new JLabel("00 hr 00 min 00 sec");
+            timerLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+            timerLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        // Add components to the content pane
-        Container container = getContentPane();
-        container.setLayout(new BorderLayout());
-        container.add(startStopButton, BorderLayout.NORTH);
-        container.add(timerLabel, BorderLayout.CENTER);
+            startButton = new JButton("Start");
+            startButton.setBackground(Color.GREEN);
+            startButton.addActionListener(e -> startTimer());
+
+            stopButton = new JButton("Stop");
+            stopButton.setBackground(Color.RED);
+            stopButton.addActionListener(e -> stopTimer());
+
+            // Add menu bar
+            JMenuBar menuBar = new JMenuBar();
+            JMenu fileMenu = new JMenu("File");
+            JMenuItem exitMenuItem = new JMenuItem("Exit");
+            exitMenuItem.addActionListener(e -> System.exit(0));
+            fileMenu.add(exitMenuItem);
+            menuBar.add(fileMenu);
+            setJMenuBar(menuBar);
+
+            // Add components to the content pane
+            Container container = getContentPane();
+            container.setLayout(new BorderLayout());
+            container.add(titleLabel, BorderLayout.NORTH); // Move titleLabel to the top center
+            container.add(timerLabel, BorderLayout.CENTER);
+            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+            buttonPanel.add(startButton);
+            buttonPanel.add(stopButton);
+            container.add(buttonPanel, BorderLayout.SOUTH);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void startTimer() {
-        timer = new Timer(1000, e -> {
-            secondsElapsed++;
-            updateTimerLabel();
-        });
-        timer.start();
-        startStopButton.setText("Stop");
+        if (timer == null) {
+            timer = new Timer(1000, e -> {
+                seconds++;
+                if (seconds == 60) {
+                    seconds = 0;
+                    minutes++;
+                    if (minutes == 60) {
+                        minutes = 0;
+                        hours++;
+                    }
+                }
+                updateTimerLabel();
+            });
+            timer.start();
+            startButton.setEnabled(false);
+            stopButton.setEnabled(true);
+        }
     }
 
     private void stopTimer() {
         if (timer != null) {
             timer.stop();
             timer = null;
-            startStopButton.setText("Start");
+            startButton.setEnabled(true);
+            stopButton.setEnabled(false);
         }
     }
 
     private void updateTimerLabel() {
-        SwingUtilities.invokeLater(() -> timerLabel.setText("Timer: " + secondsElapsed + " seconds"));
+        String time = String.format("%02d hr %02d min %02d sec", hours, minutes, seconds);
+        timerLabel.setText(time);
     }
 
     public static void main(String[] args) {
