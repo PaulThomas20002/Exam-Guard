@@ -1,8 +1,10 @@
 package org.example;
-import org.example.TimerApp;
+
+import javax.swing.*;
+
 public class Main {
+
     public static void main(String[] args) {
-        TimerApp timerApp = new TimerApp();
-        timerApp.setVisible(true);
+        SwingUtilities.invokeLater(() -> new TimerApp().setVisible(true));
     }
 }
