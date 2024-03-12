@@ -48,6 +48,37 @@ public class TimerApp extends JFrame {
                 stopButton.setEnabled(false);
             });
 
+            // Create menu bar
+            JMenuBar menuBar = new JMenuBar();
+
+            // File menu
+            JMenu fileMenu = new JMenu("File");
+            JMenuItem exitMenuItem = new JMenuItem("Exit");
+            exitMenuItem.addActionListener(e -> System.exit(0));
+            fileMenu.add(exitMenuItem);
+
+            // Log menu
+            JMenu logMenu = new JMenu("Log");
+            JMenuItem historyMenuItem = new JMenuItem("History");
+            // Add action listener for the history menu item
+            historyMenuItem.addActionListener(e -> showHistory());
+            logMenu.add(historyMenuItem);
+
+            // Help menu
+            JMenu helpMenu = new JMenu("Help");
+            JMenuItem helpMenuItem = new JMenuItem("Help");
+            // Add action listener for the help menu item
+            helpMenuItem.addActionListener(e -> showHelp());
+            helpMenu.add(helpMenuItem);
+
+            // Add menus to the menu bar
+            menuBar.add(fileMenu);
+            menuBar.add(logMenu);
+            menuBar.add(helpMenu);
+
+            // Set the menu bar for the frame
+            setJMenuBar(menuBar);
+
             // Set default close operation
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             // Set window size and location
@@ -90,5 +121,17 @@ public class TimerApp extends JFrame {
             timer.cancel();
             timer = null;
         }
+    }
+
+    // Method to show history
+    private void showHistory() {
+        // Add your logic to display the history
+        JOptionPane.showMessageDialog(this, "Showing history...");
+    }
+
+    // Method to show help
+    private void showHelp() {
+        // Add your logic to display help information
+        JOptionPane.showMessageDialog(this, "Showing help...");
     }
 }
