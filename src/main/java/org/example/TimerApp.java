@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
 public class TimerApp extends JFrame {
 
     private JLabel timerLabel;
@@ -14,8 +15,11 @@ public class TimerApp extends JFrame {
     private long startTime;
     private final long targetTime = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
 
+    private ApplicationLogger logger;
     public TimerApp() {
         try {
+
+            logger = new ApplicationLogger();
             // Set background color to white
             this.getContentPane().setBackground(Color.WHITE);
 
@@ -84,7 +88,7 @@ public class TimerApp extends JFrame {
             // Set window size and location
             this.setSize(400, 800);
             this.setLocationRelativeTo(null);
-            this.setTitle("Countdown Timer");
+            this.setTitle("Exam Guard");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -125,8 +129,11 @@ public class TimerApp extends JFrame {
 
     // Method to show history
     private void showHistory() {
-        // Add your logic to display the history
-        JOptionPane.showMessageDialog(this, "Showing history...");
+        // Create and display the UserActivityMonitor
+        SwingUtilities.invokeLater(() -> {
+            UserActivityMonitor userActivityMonitor = new UserActivityMonitor();
+            userActivityMonitor.setVisible(true);
+        });
     }
 
     // Method to show help
@@ -134,4 +141,6 @@ public class TimerApp extends JFrame {
         // Add your logic to display help information
         JOptionPane.showMessageDialog(this, "Showing help...");
     }
+
+
 }
