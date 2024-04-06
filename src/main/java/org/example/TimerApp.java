@@ -15,11 +15,10 @@ public class TimerApp extends JFrame {
     private long startTime;
     private final long targetTime = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
 
-    private ApplicationLogger logger;
     public TimerApp() {
         try {
 
-            logger = new ApplicationLogger();
+            ApplicationLogger logger = new ApplicationLogger();
             // Set background color to white
             this.getContentPane().setBackground(Color.WHITE);
 
