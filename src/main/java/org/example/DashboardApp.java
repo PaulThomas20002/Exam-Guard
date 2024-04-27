@@ -7,7 +7,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class DashboardApp extends JFrame {
-
+    private USBEnable usbEnable;
+    private USBBlocker usbBlocker;
     private final JTextArea loggingTextArea;
     private final JPanel usbBox;
     private final JPanel networkBox;
@@ -119,21 +120,36 @@ public class DashboardApp extends JFrame {
 
         // Center the frame on the screen
         setLocationRelativeTo(null);
-
+        usbBlocker = new USBBlocker();
+        usbEnable = new USBEnable();
         // Add action listeners to the buttons
         startButton.addActionListener(e -> {
             setStatus("Status: Running");
             setBoxColor(new Color(24, 119, 242)); // Light blue color
             appendToLog("Start button clicked");
             startMonitoring();
+            Thread blockingThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    usbBlocker.Block();
+                }
+            });
+            blockingThread.start();
         });
 
         stopButton.addActionListener(e -> {
             setStatus("Status: Idle");
             setBoxColor(new Color(176, 190, 197)); // Grayish blue color
             appendToLog("Stop button clicked");
-            // Launch ExamStopper for authentication
+            Thread enableThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    usbEnable.enable();
+                }
+            });
+            enableThread.start();            // Launch ExamStopper for authentication
             new ExamStopper().setVisible(true);
+
         });
     }
 
@@ -188,4 +204,3 @@ public class DashboardApp extends JFrame {
     }
 
 }
-
