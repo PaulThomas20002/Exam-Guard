@@ -1,5 +1,3 @@
-package org.example;
-
 import javax.swing.*;
 import java.awt.*;
 import java.text.DecimalFormat;
@@ -18,7 +16,7 @@ public class TimerApp extends JFrame {
     public TimerApp() {
         try {
 
-            ApplicationLogger logger = new ApplicationLogger();
+            //ApplicationLogger logger = new ApplicationLogger();
             // Set background color to white
             this.getContentPane().setBackground(Color.WHITE);
 
@@ -64,7 +62,7 @@ public class TimerApp extends JFrame {
             JMenu logMenu = new JMenu("Log");
             JMenuItem historyMenuItem = new JMenuItem("History");
             // Add action listener for the history menu item
-            historyMenuItem.addActionListener(e -> showHistory());
+//            historyMenuItem.addActionListener(e -> showHistory());
             logMenu.add(historyMenuItem);
 
             // Help menu
@@ -127,13 +125,13 @@ public class TimerApp extends JFrame {
     }
 
     // Method to show history
-    private void showHistory() {
-        // Create and display the UserActivityMonitor
-        SwingUtilities.invokeLater(() -> {
-            UserActivityMonitor userActivityMonitor = new UserActivityMonitor();
-            userActivityMonitor.setVisible(true);
-        });
-    }
+//    private void showHistory() {
+//        // Create and display the UserActivityMonitor
+//        SwingUtilities.invokeLater(() -> {
+//            UserActivityMonitor userActivityMonitor = new UserActivityMonitor();
+//            userActivityMonitor.setVisible(true);
+//        });
+//    }
 
     // Method to show help
     private void showHelp() {

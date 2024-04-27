@@ -2,6 +2,9 @@ package org.example;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class DashboardApp extends JFrame {
 
@@ -11,6 +14,8 @@ public class DashboardApp extends JFrame {
     private final JPanel loggingBox;
     private final JPanel fileIsolationBox;
     private final JLabel statusLabel;
+
+    private boolean monitoring = false;
 
     public DashboardApp() {
         // Set up the frame
@@ -120,6 +125,7 @@ public class DashboardApp extends JFrame {
             setStatus("Status: Running");
             setBoxColor(new Color(24, 119, 242)); // Light blue color
             appendToLog("Start button clicked");
+            startMonitoring();
         });
 
         stopButton.addActionListener(e -> {
@@ -159,12 +165,27 @@ public class DashboardApp extends JFrame {
     private void appendToLog(String message) {
         loggingTextArea.append(message + "\n");
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            DashboardApp app = new DashboardApp();
-            app.setVisible(true);
-        });
+    private void startMonitoring() {
+        if (!monitoring) {
+            monitoring = true;
+            new Thread(() -> {
+                try {
+                    // Start monitoring the active applications
+                    Process process = Runtime.getRuntime().exec("ps -eo comm");
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                    String line;
+                    while (monitoring && (line = reader.readLine()) != null) {
+                        // Output the application name or perform further processing
+                        //System.out.println("Active Application: " + line.trim());
+                        appendToLog("Active Application: " + line.trim());
+                    }
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
     }
+
 }
 
