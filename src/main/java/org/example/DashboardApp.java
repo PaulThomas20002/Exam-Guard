@@ -1,14 +1,16 @@
+package org.example;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class DashboardApp extends JFrame {
 
-    private JTextArea loggingTextArea;
-    private JPanel usbBox;
-    private JPanel networkBox;
-    private JPanel loggingBox;
-    private JPanel fileIsolationBox;
-    private JLabel statusLabel;
+    private final JTextArea loggingTextArea;
+    private final JPanel usbBox;
+    private final JPanel networkBox;
+    private final JPanel loggingBox;
+    private final JPanel fileIsolationBox;
+    private final JLabel statusLabel;
 
     public DashboardApp() {
         // Set up the frame
@@ -22,6 +24,7 @@ public class DashboardApp extends JFrame {
         mainPanel.setBackground(new Color(240, 240, 240)); // Light gray background
 
         // Create the text component for Exam Guard
+
         JPanel titlePanel = new JPanel();
         titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
         titlePanel.setBackground(new Color(240, 240, 240));
