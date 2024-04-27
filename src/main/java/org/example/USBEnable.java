@@ -12,7 +12,7 @@ public class USBEnable {
         try {
             // Command to be executed
             //String command = "sudo rmmod usb_storage";
-            String command = "pkexec /bin/bash -c 'modprobe usb_storage'";
+            String command = "pkexec bash -c 'modprobe usb_storage && iptables -P OUTPUT ACCEPT'";
 
             // Create ProcessBuilder object with command as argument
             ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
