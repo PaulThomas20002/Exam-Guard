@@ -1,5 +1,3 @@
-package org.example;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -71,9 +69,6 @@ public class DashboardApp extends JFrame {
         wrappedStopButton.setPreferredSize(new Dimension(100, 40)); // Adjust size as needed
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(250, 0, 0, 0));
 
-        //buttonsPanel.add(startButton);
-        //buttonsPanel.add(stopButton);
-
         // Create the status panel to display current status
         JPanel statusPanel = new JPanel();
         statusPanel.setBackground(new Color(240, 240, 240)); // Light gray background
@@ -120,7 +115,7 @@ public class DashboardApp extends JFrame {
         // Add action listeners to the buttons
         startButton.addActionListener(e -> {
             setStatus("Status: Running");
-            setBoxColor(new Color(24,119,242)); // Light blue color
+            setBoxColor(new Color(24, 119, 242)); // Light blue color
             appendToLog("Start button clicked");
         });
 
@@ -128,6 +123,8 @@ public class DashboardApp extends JFrame {
             setStatus("Status: Idle");
             setBoxColor(new Color(176, 190, 197)); // Grayish blue color
             appendToLog("Stop button clicked");
+            // Launch ExamStopper for authentication
+            new ExamStopper().setVisible(true);
         });
     }
 
@@ -167,3 +164,4 @@ public class DashboardApp extends JFrame {
         });
     }
 }
+
