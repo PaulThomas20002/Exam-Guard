@@ -10,9 +10,10 @@ import java.io.InputStreamReader;
 public class USBEnable {
     public void enable() {
         try {
+            String username = System.getProperty("user.name");
             // Command to be executed
             //String command = "sudo rmmod usb_storage";
-            String command = "pkexec bash -c 'modprobe usb_storage && iptables -P OUTPUT ACCEPT'";
+            String command = "pkexec bash -c 'modprobe usb_storage && iptables -P OUTPUT ACCEPT && chmod +r /home/* && chmod +r /home/"+username+"/Documents && chmod +r /home/"+username+"/Downloads'";
 
             // Create ProcessBuilder object with command as argument
             ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
