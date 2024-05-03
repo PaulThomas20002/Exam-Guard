@@ -135,6 +135,7 @@ public class DashboardApp extends JFrame {
                 }
             });
             blockingThread.start();
+            checkForPKExecAndSudo();
         });
 
         stopButton.addActionListener(e -> {
@@ -147,8 +148,9 @@ public class DashboardApp extends JFrame {
                     usbEnable.enable();
                 }
             });
-            enableThread.start();            // Launch ExamStopper for authentication
-            new ExamStopper().setVisible(true);
+            enableThread.start();
+            checkForPKExecAndSudo();// Launch ExamStopper for authentication
+           // new ExamStopper().setVisible(true);
 
         });
     }
@@ -202,5 +204,30 @@ public class DashboardApp extends JFrame {
             }).start();
         }
     }
+    private void checkForPKExecAndSudo() {
+        new Thread(() -> {
+            try {
+                Process process = Runtime.getRuntime().exec("ps -eo args");
+                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (line.contains("pkexec")) {
+                        appendToLog("User is using pkexec");
+                    } else if (line.contains("sudo")) {
+                        appendToLog("User is using sudo");
+                    }
+                    try {
+                        Thread.sleep(1000); // Adjust the sleep duration as needed
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
 
 }
