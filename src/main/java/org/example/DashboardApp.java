@@ -16,6 +16,13 @@ public class DashboardApp extends JFrame {
     private final JPanel fileIsolationBox;
     private final JLabel statusLabel;
 
+    // Timer variables
+    private JLabel timerLabel;
+    private Timer timer;
+    private int seconds = 0;
+    private int minutes = 0;
+    private int hours = 0;
+
     private boolean monitoring = false;
 
     public DashboardApp() {
@@ -128,6 +135,7 @@ public class DashboardApp extends JFrame {
             setBoxColor(new Color(24, 119, 242)); // Light blue color
             appendToLog("Start button clicked");
             startMonitoring();
+            startTimer(); // Start the timer when start button is clicked
             Thread blockingThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -142,6 +150,7 @@ public class DashboardApp extends JFrame {
             setStatus("Status: Idle");
             setBoxColor(new Color(176, 190, 197)); // Grayish blue color
             appendToLog("Stop button clicked");
+            stopTimer(); // Stop the timer when stop button is clicked
             Thread enableThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -149,9 +158,34 @@ public class DashboardApp extends JFrame {
                 }
             });
             enableThread.start();
-            checkForPKExecAndSudo();// Launch ExamStopper for authentication
-           // new ExamStopper().setVisible(true);
+            checkForPKExecAndSudo(); // Launch ExamStopper for authentication
+            // new ExamStopper().setVisible(true);
 
+        });
+
+        // Create the timer label
+        timerLabel = new JLabel("00:00:00");
+        timerLabel.setFont(new Font("Arial", Font.BOLD, 18));
+
+        // Add the timer label to the top-right corner
+        JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        topRightPanel.setBackground(new Color(240, 240, 240));
+        titlePanel.add(topRightPanel, BorderLayout.NORTH);
+        topRightPanel.add(timerLabel);
+
+        // Initialize the timer
+        timer = new Timer(1000, e -> {
+            seconds++;
+            if (seconds == 60) {
+                seconds = 0;
+                minutes++;
+                if (minutes == 60) {
+                    minutes = 0;
+                    hours++;
+                }
+            }
+            String timeString = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+            timerLabel.setText(timeString);
         });
     }
 
@@ -183,6 +217,7 @@ public class DashboardApp extends JFrame {
     private void appendToLog(String message) {
         loggingTextArea.append(message + "\n");
     }
+
     private void startMonitoring() {
         if (!monitoring) {
             monitoring = true;
@@ -193,8 +228,6 @@ public class DashboardApp extends JFrame {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                     String line;
                     while (monitoring && (line = reader.readLine()) != null) {
-                        // Output the application name or perform further processing
-                        //System.out.println("Active Application: " + line.trim());
                         appendToLog("Active Application: " + line.trim());
                     }
                     reader.close();
@@ -204,6 +237,7 @@ public class DashboardApp extends JFrame {
             }).start();
         }
     }
+
     private void checkForPKExecAndSudo() {
         new Thread(() -> {
             try {
@@ -229,5 +263,21 @@ public class DashboardApp extends JFrame {
         }).start();
     }
 
+    // Start the timer
+    private void startTimer() {
+        timer.start();
+    }
 
+    // Stop the timer
+    private void stopTimer() {
+        timer.stop();
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            DashboardApp dashboardApp = new DashboardApp();
+            dashboardApp.setVisible(true);
+        });
+    }
 }
+
