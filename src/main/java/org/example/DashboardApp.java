@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class DashboardApp extends JFrame {
-    private USBEnable usbEnable;
-    private USBBlocker usbBlocker;
+    private final USBEnable usbEnable;
+    private final USBBlocker usbBlocker;
     private final JTextArea loggingTextArea;
     private final JPanel usbBox;
     private final JPanel networkBox;
@@ -17,8 +17,8 @@ public class DashboardApp extends JFrame {
     private final JLabel statusLabel;
 
     // Timer variables
-    private JLabel timerLabel;
-    private Timer timer;
+    private final JLabel timerLabel;
+    private final Timer timer;
     private int seconds = 0;
     private int minutes = 0;
     private int hours = 0;
